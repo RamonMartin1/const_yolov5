@@ -1,0 +1,9 @@
+train: ../yolov5/images/train/ 
+val:  ../yolov5/images/val/
+test: ../yolov5/image/test/
+
+# number of classes
+nc: 15
+
+# class names
+names: ['person', 'helmet', 'vest', 'board', 'wood', 'rebar', 'brick', 'scaffold', 'handcart', 'cutter', 'ebox', 'hopper', 'hook', 'fence', 'slogan']
