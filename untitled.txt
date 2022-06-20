@@ -1,0 +1,26 @@
+/opt/conda/lib/python3.7/site-packages/scipy/optimize/_numdiff.py
+
+/opt/conda/lib/python3.7/site-packages/scipy/optimize/_numdiff.py
+
+
+strings msmuhammad/workbench/miniconda3/envs/test2/lib/libstdc++.so.6 | grep GLIBCXX
+
+/opt/conda
+
+strings libstdc++.so.6 | grep GLIBCXX
+
+find libstdc++.so.6:
+    /opt/conda/lib/libstdc++.so.6
+    /opt/conda/pkgs/libstdcxx-ng-11.2.0-he4da1e4_14/lib/libstdc++.so.6
+    /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+    /usr/local/cuda-11.0/nsight-systems-2020.3.2/target-linux-armv8/host-linux-armv8/libstdc++.so.6
+    /usr/local/cuda-11.0/nsight-systems-2020.3.2/host-linux-x64/libstdc++.so.6
+    
+strings /opt/conda/lib/libstdc++.so.6 | grep GLIBCXX
+
+
+wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
+sh Anaconda3-2019.07-Linux-x86_64.sh 
+cp anaconda3/lib/libstdc++.so.6.0.26 /usr/lib/x86_64-linux-gnu/
+rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6
+ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.26 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
