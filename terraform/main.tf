@@ -9,9 +9,9 @@ resource "google_storage_bucket_object" "archive" {
   source = "./pysrc/Archive.zip"
 }
 
-resource "google_cloudfunctions_function" "function" {
-  name        = "function-test"
-  description = "My function"
+resource "google_cloudfunctions_function" "yolo" {
+  name        = "yolo"
+  description = "yolo detector"
   runtime     = "python38"
 
   available_memory_mb   = 1024
@@ -19,7 +19,7 @@ resource "google_cloudfunctions_function" "function" {
   source_archive_object = google_storage_bucket_object.archive.name
   trigger_http          = true
   timeout               = 60
-  entry_point           = "helloGET"
+  entry_point           = "main"
   labels = {
     my-label = "my-label-value"
   }
