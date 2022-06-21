@@ -1,24 +1,29 @@
-
 import torch
 import pandas as pd
-from pathlib import Path
-
-img = '/Users/ramonmartin/Documents/pytorch_projects/const_yolov5/terraform/pysrc/data/images/hd88.jpg'  # or file, Path, PIL, OpenCV, numpy, list
-  
+import os
+from datetime import date
 
 @torch.no_grad()
 def run():
   model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt') 
+  return model
+  
+model = run()
 
-  #model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
-  #model.load_state_dict(torch.load('best.pt')['model'].state_dict())
-  #model.fuse()
-  #model.load_state_dict(torch.load('best.pt'))
-  #img = '/Users/ramonmartin/Documents/pytorch_projects/const_yolov5/terraform/pysrc/data/images/hd88.jpg'  # or file, Path, PIL, OpenCV, numpy, list
-  # Inference
-  results = model(img)
+df = pd.DataFrame()
+path = 'data/images'
+pics = os.listdir(path)
+for pic in pics:
+  img  = path + '/' + pic
 
-  # Results
-  results.save()  # or .show(), .save(), .crop(), .pandas(), etc.
+  # output dataframes
+  tempdf = model(img).pandas().xyxy[0]
+  tempdf['img'] = pic
+  df = pd.concat([df,tempdf])
 
-run()
+  #output images 
+  model(img).save(save_dir = 'data/labelled')
+
+today = str(date.today())
+filename = today + '_results.csv'
+df.to_csv(filename)
