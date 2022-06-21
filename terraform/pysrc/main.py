@@ -16,6 +16,12 @@ def main(*args):
   df = pd.DataFrame()
   path = 'data/images'
   pics = os.listdir(path)
+
+  today = str(date.today())
+
+  client = storage.Client()
+  bucket = client.get_bucket('file-dump-bucket')
+
   for pic in pics:
     img  = path + '/' + pic
 
@@ -30,11 +36,20 @@ def main(*args):
   tmp_files = os.listdir('/tmp')
   if not ('dataframes' in tmp_files):
     os.mkdir('/tmp/dataframes')
-  today = str(date.today())
+  
   filename = '/tmp/dataframes/' + today + '_results.csv'
   df.to_csv(filename)
-
-  client = storage.Client()
-  bucket = client.get_bucket('file-dump-bucket')
-  blob = bucket.blob(pic + '.csv')
+  
+  blob = bucket.blob(today + '.csv')
   blob.upload_from_filename(filename)
+
+  labelled_pics = os.listdir('/tmp/data/labelled')
+
+  # print(labelled_pics)
+
+  bucket2 = client.get_bucket('file-dump-bucket2')
+  for img in labelled_pics:
+    picblob = bucket2.blob(img)
+    picblob.upload_from_filename('/tmp/data/labelled/' + img)
+
+  return "successs!!!!"

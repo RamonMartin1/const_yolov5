@@ -3,6 +3,11 @@ resource "google_storage_bucket" "file_dump" {
   location = "US"
 }
 
+resource "google_storage_bucket" "file_dump2" {
+  name     = "file-dump-bucket2"
+  location = "US"
+}
+
 resource "google_storage_bucket" "code_load" {
   name     = "code-load-bucket"
   location = "US"
@@ -15,7 +20,7 @@ resource "google_storage_bucket_object" "archive" {
 }
 
 resource "google_cloudfunctions_function" "yolo" {
-  name        = "yoloo"
+  name        = "yolo"
   description = "yolo detector"
   runtime     = "python38"
 
