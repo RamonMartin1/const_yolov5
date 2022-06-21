@@ -15,7 +15,7 @@ resource "google_storage_bucket_object" "archive" {
 }
 
 resource "google_cloudfunctions_function" "yolo" {
-  name        = "yolo"
+  name        = "yoloo"
   description = "yolo detector"
   runtime     = "python38"
 
@@ -27,6 +27,9 @@ resource "google_cloudfunctions_function" "yolo" {
   entry_point           = "main"
   labels = {
     my-label = "my-label-value"
+  }
+  timeouts {
+    create = "15m"
   }
 
   # environment_variables = {
@@ -41,5 +44,5 @@ resource "google_cloudfunctions_function_iam_member" "invoker" {
   cloud_function = google_cloudfunctions_function.yolo.name
 
   role   = "roles/cloudfunctions.invoker"
-  member = "user:myFunctionInvoker@example.com"
+  member = "user:rlew631@gmail.com"
 }

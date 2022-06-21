@@ -10,7 +10,7 @@ def run():
   model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt') 
   return model
   
-def main():
+def main(*args):
   model = run()
 
   df = pd.DataFrame()
@@ -25,13 +25,16 @@ def main():
     df = pd.concat([df,tempdf])
 
     #output images 
-    model(img).save(save_dir = 'data/labelled')
+    model(img).save(save_dir = '/tmp/data/labelled')
 
+  tmp_files = os.listdir('/tmp')
+  if not ('dataframes' in tmp_files):
+    os.mkdir('/tmp/dataframes')
   today = str(date.today())
-  filename = today + '_results.csv'
+  filename = '/tmp/dataframes/' + today + '_results.csv'
   df.to_csv(filename)
 
   client = storage.Client()
-  bucket = client.get_bucket('file_dump')
+  bucket = client.get_bucket('file-dump-bucket')
   blob = bucket.blob(pic + '.csv')
   blob.upload_from_filename(filename)
