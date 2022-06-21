@@ -7,12 +7,12 @@
 </p>
 
 ## In GCP
-<br>
 
 ### Command line for creating instance
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-standard-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-p100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220610,mode=rw,size=200,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 
 <br>   
+   
 ### Recreating image from snapshot
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-highmem-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-v100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,mode=rw,size=200,source-snapshot=projects/<PROJECT_NAME>/global/snapshots/<SNAPSHOT_NAME>,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --reservation-affinity=any
 
@@ -21,7 +21,7 @@ gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE>
 ### Cloud shell jupyter
 gcloud compute ssh --project <PROJECT_NAME> --zone <zone> <VM_NAME> -- -L 8081:localhost:8081
 
-       <br>
+<br>
 #### FIREWALL RULE
 Provide appropriate name. Set Target to “All instances in the network”, 
 source filter as “IP ranges” and Source IP ranges as “0.0.0.0/0”. 
@@ -44,11 +44,11 @@ conda list
 jupyter lab --generate-config
 cd to config file
 nano jupyter_lab_config.py
-    add these lines to config file
-        c.ServerApp.allow_origin = '*'
-        c.ServerApp.allow_remote_access = True
-        c.ServerApp.ip = '*'
-        c.LabApp.app_dir = 'home/'
+add these lines to config file
+  c.ServerApp.allow_origin = '*'
+  c.ServerApp.allow_remote_access = True
+  c.ServerApp.ip = '*'
+  c.LabApp.app_dir = 'home/'
 jupyter lab password:
     enter password
     confirm password
