@@ -18,8 +18,9 @@
 
 
    
-### Cloud shell jupyter
-<p> gcloud compute ssh --project <PROJECT_NAME> --zone <zone> <VM_NAME> -- -L 8081:localhost:8081 </p> 
+### CLOUD SHELL JUPYER
+<p> if enabled preinstalled jupyter lab from GCP run:  
+gcloud compute ssh --project <PROJECT_NAME> --zone <zone> <VM_NAME> -- -L 8081:localhost:8081 </p> 
 
    
 
