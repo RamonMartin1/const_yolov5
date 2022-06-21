@@ -7,12 +7,16 @@
 </p>
 
 ## In GCP
+
+
 ### Command line for creating instance
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-standard-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-p100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220610,mode=rw,size=200,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 
+   
 ### Recreating image from snapshot
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-highmem-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-v100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,mode=rw,size=200,source-snapshot=projects/<PROJECT_NAME>/global/snapshots/<SNAPSHOT_NAME>,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --reservation-affinity=any
 
+   
 ### Cloud shell jupyter
 gcloud compute ssh \
     --project <PROJECT_NAME>\
@@ -20,12 +24,14 @@ gcloud compute ssh \
     <VM_NAME> \
     -- -L 8081:localhost:8081
 
-#### Firewall Rule
+#### FIREWALL RULE
 Provide appropriate name. Set Target to “All instances in the network”, 
 source filter as “IP ranges” and Source IP ranges as “0.0.0.0/0”. 
 Enable the tcp checkbox and set the value as 8080. Click on Create.
 
-### Installin pip&jupyter
+       
+### INSTALL CONDA & JUPYTER
+ssh into vm       
 sudo apt update
 sudo apt install python3-pip
 cd /
@@ -51,20 +57,24 @@ jupyter lab password:
 
 jupyter lab --allow-root --port 8081 
 go-to <VM external IP>:8081
+       
 
 ### REPO
 git clone https://github.com/ultralytics/yolov5
 cd yolov5
 pip install -r requirements.txt
 wget https://scut-scet-academic.oss-cn-guangzhou.aliyuncs.com/SODA/2022.2/VOCv1.zip
+       
 
 
-### 7zip
+### UNZIP data
 need to use 7zip to unzip cause unzip doesnt work on larger files
 sudo apt install p7zip-full p7zip-rar
 7z x VOCv1.zip (e extracts files without folders, x extracts files with nested subfolder)
+       
 
-### VOC viles need renaming
+### RENAMING
+delete weird symbols from following file names
 ['annotations/hptm2969¸Ä.xml',   
  'annotations/hptm2970¸Ä.xml',
  'annotations/hptm2967¸Ä.xml']   
@@ -72,15 +82,29 @@ sudo apt install p7zip-full p7zip-rar
  'images/hptm2969¸Ä.jpg',
  'images/hptm2970¸Ä.jpg',]
 
-  'annotations/README.md' delete
+delete 'annotations/README.md'
+rename annotations folder to labels
+       
 
-### File folders
-rename annotations to labels
+### Convert the labels and do test/train split
+All code for converting .xml labels to .txt is in YOLOv5.ipynb
+run python train.py with all the arguments to train model 
+       
+       
+### Creating swap memory to -cache large data
+sudo swapoff /swapfile  #clear existing swap
+sudo fallocate -l 16G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+free -h  # check memory
+       
 
 ### FINALLY A WORKING FIX to the libstdc++.so.6: version GLIBCXX_3.4.26' not found (took me 2 days to figure it out)
 Confirm GLIBCXX_3.4.26 is missing
 cd /usr/lib/x86_64-linux-gnu/
 strings libstdc++.so.6 | grep GLIBCXX
+       
 
 To fix run 
 wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
@@ -88,26 +112,13 @@ sh Anaconda3-2019.07-Linux-x86_64.sh
 cp anaconda3/lib/libstdc++.so.6.0.26 /usr/lib/x86_64-linux-gnu/
 rm /usr/lib/x86_64-linux-gnu/libstdc++.so.6
 ln -s /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.26 /usr/lib/x86_64-linux-gnu/libstdc++.so.6
-
-### Creating swap memory to -cache large data
-
-sudo swapoff /swapfile  #clear existing swap
-
-sudo fallocate -l 16G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-free -h  # check memory
-
-### Convert the labels and do test/train split
-All code for converting .xml labels to .txt is in YOLOv5.ipynb
-run python train.py with all the arguments to train model
- 
+       
        
 ### Trained Model
 For trained model go to terraform subfolder the main.py has all the code to run the model. 
 Model itself is best.pt 
    
+       
 ### ML Ops
 Deploy model to Cloud Functions using Terraform
 Setup trigger for Cloud Function to run on data being uploaded to ingestion bucket
