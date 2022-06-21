@@ -1,11 +1,11 @@
 # YOLOv5 GCP Training and deployment
-<div align="center">
+
    
 <p>
    
    <img width="850" src="https://github.com/RamonMartin1/const_yolov5/blob/ab0309651d66d88ad636f225f5b5dc61a877c932/YOLOv5%20GCP%20Flowchart.png"></a>
 </p>
-<br>
+
 ## In GCP
 ### Command line for creating instance
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-standard-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-p100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20220610,mode=rw,size=200,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
