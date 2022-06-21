@@ -90,6 +90,7 @@ def run(
 
     # Dataloader
     dataset = LoadImages(source, img_size=imgsz, stride=stride, auto=pt)
+    print(dataset)
     bs = 1  # batch_size
 
     vid_path, vid_writer = [None] * bs, [None] * bs
