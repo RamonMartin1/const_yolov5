@@ -17,12 +17,9 @@ gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE>
 gcloud compute instances create <VM_NAME> --project=<PROJECT_NAME> --zone=<ZONE> --machine-type=n1-highmem-8 --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=TERMINATE --provisioning-model=STANDARD --service-account=<SERVICE-ACC> --scopes=https://www.googleapis.com/auth/cloud-platform --accelerator=count=1,type=nvidia-tesla-v100 --tags=http-server,https-server --create-disk=auto-delete=yes,boot=yes,device-name=<VM_NAME>,mode=rw,size=200,source-snapshot=projects/<PROJECT_NAME>/global/snapshots/<SNAPSHOT_NAME>,type=projects/<PROJECT_NAME>/zones/<ZONE>/diskTypes/pd-ssd --reservation-affinity=any
 
  <br>  
+   
 ### Cloud shell jupyter
-gcloud compute ssh \
-    --project <PROJECT_NAME>\
-    --zone <zone> \
-    <VM_NAME> \
-    -- -L 8081:localhost:8081
+gcloud compute ssh --project <PROJECT_NAME> --zone <zone> <VM_NAME> -- -L 8081:localhost:8081
 
        <br>
 #### FIREWALL RULE
