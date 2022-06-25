@@ -33,7 +33,7 @@ jobs:
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt coremltools openvino-dev tensorflow-cpu --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install -r terraform/pysrc/requirements.txt coremltools openvino-dev tensorflow-cpu --extra-index-url https://download.pytorch.org/whl/cpu
           python --version
           pip --version
           pip list
@@ -78,7 +78,7 @@ jobs:
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install -r terraform/pysrc/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
           python --version
           pip --version
           pip list
@@ -103,11 +103,22 @@ jobs:
           # Val
           # python val.py --img 64 --batch 32 --weights $model.pt --device $d
           # python val.py --img 64 --batch 32 --weights $best --device $d
+          
+          # gcloud
+          sudo apt-get install apt-transport-https ca-certificates gnupg
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
+          sudo apt-get update && sudo apt-get install google-cloud-cli
+          
+          gcloud auth activate-service-account terraform_acc --key-file= ${{ secretes.GCLOUD_AUTH }}
+          
+          
           # Detect
           # python detect.py --weights $model.pt --device $d
           # python detect.py --weights $best --device $d
           python terraform/pysrc/main.py
           python hubconf.py  # hub
+          
           
           # Export
           # python models/tf.py --weights $model.pt  # build TF model
