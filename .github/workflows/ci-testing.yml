@@ -106,7 +106,7 @@ jobs:
           # Detect
           # python detect.py --weights $model.pt --device $d
           # python detect.py --weights $best --device $d
-          python terraform/main.py
+          python terraform/pysrc/main.py
           python hubconf.py  # hub
           
           # Export
