@@ -96,9 +96,9 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: '${{ secrets.GCLOUD_AUTH }}'
-      - name: 'Set up Cloud SDK'
+      - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0'
-      - name: 'Use gcloud CLI'
+      - name: Use gcloud CLI
         run: 'gcloud info'
       - name: Run tests
         shell: bash
@@ -112,32 +112,13 @@ jobs:
           # Val
           # python val.py --img 64 --batch 32 --weights $model.pt --device $d
           # python val.py --img 64 --batch 32 --weights $best --device $d
-          
-          # gcloud
-          # apt-get install apt-transport-https ca-certificates gnupg
-          # echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          # curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
-          # sudo apt update && apt install google-cloud-cli
-          
-          # gcloud auth activate-service-account terraform_acc --key-file= ${{ secrets.GCLOUD_AUTH }}
-          
-          
           # Detect
           # python detect.py --weights $model.pt --device $d
           # python detect.py --weights $best --device $d
           python terraform/pysrc/main.py
-          python hubconf.py  # hub
-          
-          
+          # python hubconf.py  # hub
           # Export
           # python models/tf.py --weights $model.pt  # build TF model
           # python models/yolo.py --cfg $model.yaml  # build PyTorch model
           # python export.py --weights $model.pt --img 64 --include torchscript  # export
-          # Python
-          # python - <<EOF
-          # import torch
-          # model = torch.hub.load('.', 'custom', path='$model', source='local')
-          # print(model('data/images/bus.jpg'))
-          # model = torch.hub.load('.', 'custom', path='$best', source='local')
-          # print(model('data/images/bus.jpg'))
           EOF
