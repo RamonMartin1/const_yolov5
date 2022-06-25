@@ -110,7 +110,7 @@ jobs:
           curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
           sudo apt-get update && sudo apt-get install google-cloud-cli
           
-          gcloud auth activate-service-account terraform_acc --key-file= ${{ secretes.GCLOUD_AUTH }}
+          gcloud auth activate-service-account terraform_acc --key-file= ${{ secrets.GCLOUD_AUTH }}
           
           
           # Detect
