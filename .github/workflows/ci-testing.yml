@@ -121,4 +121,4 @@ jobs:
           # python models/tf.py --weights $model.pt  # build TF model
           # python models/yolo.py --cfg $model.yaml  # build PyTorch model
           # python export.py --weights $model.pt --img 64 --include torchscript  # export
-          EOF
+          # EOF
