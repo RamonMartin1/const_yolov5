@@ -14,6 +14,8 @@ on:
 jobs:
   Benchmarks:
     runs-on: ${{ matrix.os }}
+    container:
+      options: --user root
     strategy:
       matrix:
         os: [ubuntu-latest]
