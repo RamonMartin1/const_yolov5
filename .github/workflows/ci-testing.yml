@@ -91,6 +91,15 @@ jobs:
           echo "GITHUB_ACTOR is $GITHUB_ACTOR"
           echo "GITHUB_REPOSITORY is $GITHUB_REPOSITORY"
           echo "GITHUB_REPOSITORY_OWNER is $GITHUB_REPOSITORY_OWNER"
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
       - name: Run tests
         shell: bash
         run: |
@@ -106,11 +115,11 @@ jobs:
           
           # gcloud
           # apt-get install apt-transport-https ca-certificates gnupg
-          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
-          sudo apt update && apt install google-cloud-cli
+          # echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+          # curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo tee /usr/share/keyrings/cloud.google.gpg
+          # sudo apt update && apt install google-cloud-cli
           
-          gcloud auth activate-service-account terraform_acc --key-file= ${{ secrets.GCLOUD_AUTH }}
+          # gcloud auth activate-service-account terraform_acc --key-file= ${{ secrets.GCLOUD_AUTH }}
           
           
           # Detect
