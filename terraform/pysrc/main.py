@@ -4,14 +4,14 @@ import os
 from datetime import date
 from gcloud import storage
 
-from google.cloud import storage as strg
+#from google.cloud import storage as strg
 
 
 def list_blobs(bucket_name):
     """Lists all the blobs in the bucket."""
     bucket_name = "ingestion_img_bucket"
 
-    storage_client = strg.Client()
+    storage_client = storage.Client()
 
     # Note: Client.list_blobs requires at least package version 1.17.0.
     blobs = storage_client.list_blobs(bucket_name)
