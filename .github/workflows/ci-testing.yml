@@ -33,7 +33,7 @@ jobs:
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt coremltools openvino-dev tensorflow-cpu --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install -r terraform/pysrc/requirements.txt coremltools openvino-dev tensorflow-cpu --extra-index-url https://download.pytorch.org/whl/cpu
           python --version
           pip --version
           pip list
@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest]
         python-version: [3.9]
         model: [yolov5n]
         include:
@@ -78,7 +78,7 @@ jobs:
       - name: Install requirements
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install -r terraform/pysrc/requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
           python --version
           pip --version
           pip list
@@ -91,33 +91,25 @@ jobs:
           echo "GITHUB_ACTOR is $GITHUB_ACTOR"
           echo "GITHUB_REPOSITORY is $GITHUB_REPOSITORY"
           echo "GITHUB_REPOSITORY_OWNER is $GITHUB_REPOSITORY_OWNER"
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Use gcloud CLI
+        run: 'gcloud info'
+      - name: Action 7z
+        uses: edgarrc/action-7z@v1
       - name: Run tests
         shell: bash
         run: |
           # export PYTHONPATH="$PWD"  # to run '$ python *.py' files in subdirectories
           d=cpu  # device
           model=${{ matrix.model }}
-          best=runs/train/exp/weights/best.pt
-          # Train
-          # python train.py --img 64 --batch 32 --weights $model.pt --cfg $model.yaml --epochs 1 --device $d
-          # Val
-          # python val.py --img 64 --batch 32 --weights $model.pt --device $d
-          # python val.py --img 64 --batch 32 --weights $best --device $d
           # Detect
-          # python detect.py --weights $model.pt --device $d
-          # python detect.py --weights $best --device $d
-          python terraform/pysrc/main.py
-          python hubconf.py  # hub
-          
-          # Export
-          # python models/tf.py --weights $model.pt  # build TF model
-          # python models/yolo.py --cfg $model.yaml  # build PyTorch model
-          # python export.py --weights $model.pt --img 64 --include torchscript  # export
-          # Python
-          # python - <<EOF
-          # import torch
-          # model = torch.hub.load('.', 'custom', path='$model', source='local')
-          # print(model('data/images/bus.jpg'))
-          # model = torch.hub.load('.', 'custom', path='$best', source='local')
-          # print(model('data/images/bus.jpg'))
-          EOF
+          7z e terraform/pysrc/Archive.zip -o/tmp/archive
+          cd /tmp/
+          ls
+          python /tmp/archive/main.py
