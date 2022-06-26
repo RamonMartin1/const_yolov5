@@ -4,6 +4,21 @@ import os
 from datetime import date
 from gcloud import storage
 
+from google.cloud import storage as strg
+
+
+def list_blobs(bucket_name):
+    """Lists all the blobs in the bucket."""
+    bucket_name = "ingestion_img_bucket"
+
+    storage_client = strg.Client()
+
+    # Note: Client.list_blobs requires at least package version 1.17.0.
+    blobs = storage_client.list_blobs(bucket_name)
+    pics = []
+    for blob in blobs:
+      pics.append(blob.name)
+    return pics
 
 @torch.no_grad()
 def run():
@@ -14,8 +29,8 @@ def main(*args):
   model = run()
 
   df = pd.DataFrame()
-  path = 'data/images'
-  pics = os.listdir(path)
+  path = 'gs://ingestion_img_bucket'
+  pics = list_blobs('ingestion_img_bucket')
 
   today = str(date.today())
 
