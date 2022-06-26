@@ -106,19 +106,6 @@ jobs:
           # export PYTHONPATH="$PWD"  # to run '$ python *.py' files in subdirectories
           d=cpu  # device
           model=${{ matrix.model }}
-          best=runs/train/exp/weights/best.pt
-          # Train
-          # python train.py --img 64 --batch 32 --weights $model.pt --cfg $model.yaml --epochs 1 --device $d
-          # Val
-          # python val.py --img 64 --batch 32 --weights $model.pt --device $d
-          # python val.py --img 64 --batch 32 --weights $best --device $d
           # Detect
-          # python detect.py --weights $model.pt --device $d
-          # python detect.py --weights $best --device $d
-          python terraform/pysrc/main.py
-          # python hubconf.py  # hub
-          # Export
-          # python models/tf.py --weights $model.pt  # build TF model
-          # python models/yolo.py --cfg $model.yaml  # build PyTorch model
-          # python export.py --weights $model.pt --img 64 --include torchscript  # export
-          # EOF
+          gzip terraform/pysrc/Archive.zip
+          python terraform/pysrc/Archive/main.py
