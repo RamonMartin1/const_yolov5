@@ -102,7 +102,6 @@ jobs:
         run: 'gcloud info'
       - name: Action 7z
         uses: edgarrc/action-7z@v1
-        run: 7z x terraform/pysrc/Archive.zip -o /tmp/archive
       - name: Run tests
         shell: bash
         run: |
@@ -110,4 +109,7 @@ jobs:
           d=cpu  # device
           model=${{ matrix.model }}
           # Detect
+          7z x terraform/pysrc/Archive.zip -o /tmp/archive
+          cd /tmp/
+          ls
           python /tmp/archive/main.py
