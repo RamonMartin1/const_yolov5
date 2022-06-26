@@ -100,6 +100,9 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v0'
       - name: Use gcloud CLI
         run: 'gcloud info'
+      - name: Action 7z
+        uses: edgarrc/action-7z@v1
+        run: 7z x terraform/pysrc/Archive.zip -o /tmp/archive
       - name: Run tests
         shell: bash
         run: |
@@ -107,5 +110,4 @@ jobs:
           d=cpu  # device
           model=${{ matrix.model }}
           # Detect
-          gzip terraform/pysrc/Archive.zip
-          python terraform/pysrc/Archive/main.py
+          python /tmp/archive/main.py
