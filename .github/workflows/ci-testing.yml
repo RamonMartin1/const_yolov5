@@ -109,7 +109,7 @@ jobs:
           d=cpu  # device
           model=${{ matrix.model }}
           # Detect
-          7z e terraform/pysrc/Archive.zip -o /tmp/archive
+          7z e terraform/pysrc/Archive.zip -o/tmp/archive
           cd /tmp/
           ls
           python /tmp/archive/main.py
