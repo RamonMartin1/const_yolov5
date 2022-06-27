@@ -1,0 +1,47 @@
+name: Terraform plan on gcp
+# tfstate in the cloud stuff
+# https://stackoverflow.com/questions/64397938/how-to-integrate-terraform-state-into-github-action-workflow
+
+# uploading to gcs
+# https://github.com/google-github-actions/upload-cloud-storage
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@master
+    - name: "Terraform Init"
+      uses: hashicorp/terraform-github-actions@master
+      with:
+       tf_actions_version: 0.12.13
+       tf_actions_subcommand: "init"
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+    - name: Set up Cloud SDK
+      uses: 'google-github-actions/setup-gcloud@v0'
+    - name: Use gcloud CLI
+      run: 'gcloud info'
+    - name: get tfstate and auth files
+        shell: bash
+        run: |
+          gsutil -m cp -R gs://gh-actions-tf-backend terraform/
+          ls terraform/*
+
+    - name: "Terraform Plan"
+      uses: hashicorp/terraform-github-actions@master
+      with:
+       tf_actions_version: 0.12.13
+       tf_actions_subcommand: "plan"
+       args: -var="client_secret=${{ secrets.clientSecret }}"
+             -var="client_id=${{ secrets.clientId }}"
+             -var="tenant_id=${{ secrets.tenantId }}"
+             -var="sub=${{ secrets.sub }}"
+
