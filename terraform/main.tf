@@ -13,11 +13,17 @@ resource "google_storage_bucket" "code_load" {
   location = "US"
 }
 
-resource "google_storage_bucket_object" "archive" {
-  name   = "Archive.zip"
+resource "google_storage_bucket_object" "yolo_archive" {
+  name   = "yolo.zip"
   bucket = google_storage_bucket.code_load.name
-  source = "./pysrc/Archive.zip"
+  source = "./yolo/yolo.zip"
 }
+
+# resource "google_storage_bucket_object" "flask_archive" {
+#   name   = "flask.zip"
+#   bucket = google_storage_bucket.code_load.name
+#   source = "./flask/flask.zip"
+# }
 
 resource "google_cloudfunctions_function" "yolo" {
   name        = "yolo"
@@ -26,7 +32,7 @@ resource "google_cloudfunctions_function" "yolo" {
 
   available_memory_mb   = 2048
   source_archive_bucket = google_storage_bucket.code_load.name
-  source_archive_object = google_storage_bucket_object.archive.name
+  source_archive_object = google_storage_bucket_object.yolo_archive.name
   trigger_http          = true
   timeout               = 60
   entry_point           = "main"
