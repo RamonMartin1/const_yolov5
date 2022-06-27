@@ -18,11 +18,6 @@ jobs:
     steps:
     - name: "Checkout"
       uses: actions/checkout@master
-    - name: "Terraform Init"
-      uses: hashicorp/terraform-github-actions@master
-      with:
-       tf_actions_version: 0.12.13
-       tf_actions_subcommand: "init"
     - id: 'auth'
       uses: 'google-github-actions/auth@v0'
       with:
@@ -36,6 +31,12 @@ jobs:
       run: |
         gsutil -m cp -R gs://gh-actions-tf-backend terraform/
         ls terraform/*
+        cd terraform
+    - name: "Terraform Init"
+      uses: hashicorp/terraform-github-actions@master
+      with:
+       tf_actions_version: 0.12.13
+       tf_actions_subcommand: "init"
     - name: "Terraform Plan"
       uses: hashicorp/terraform-github-actions@master
       with:
