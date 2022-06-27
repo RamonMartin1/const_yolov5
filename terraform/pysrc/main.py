@@ -2,9 +2,9 @@ import torch
 import pandas as pd
 import os
 from datetime import date
-from gcloud import storage
+# from gcloud import storage
 
-#from google.cloud import storage as strg
+from google.cloud import storage
 
 
 def list_blobs(bucket_name):
@@ -31,6 +31,7 @@ def main(*args):
   df = pd.DataFrame()
   path = 'gs://ingestion_img_bucket'
   pics = list_blobs('ingestion_img_bucket')
+  print(pics)
 
   today = str(date.today())
 
@@ -39,14 +40,21 @@ def main(*args):
 
   for pic in pics:
     img  = path + '/' + pic
+    client2 = storage.Client()
+    bucket2 = client2.get_bucket('ingestion_img_bucket')
+    blob2 = bucket2.blob(pic)
+    blob2.download_to_filename('/tmp/' + pic)
 
     # output dataframes
-    tempdf = model(img).pandas().xyxy[0]
+    # tempdf = model(img).pandas().xyxy[0]
+    tempdf = model('/tmp/' + pic).pandas().xyxy[0]
     tempdf['img'] = pic
     df = pd.concat([df,tempdf])
 
     #output images 
-    model(img).save(save_dir = '/tmp/data/labelled')
+    model('/tmp/' + pic).save(save_dir = '/tmp/data/labelled')
+
+  print(df.head())
 
   tmp_files = os.listdir('/tmp')
   if not ('dataframes' in tmp_files):
@@ -62,9 +70,11 @@ def main(*args):
 
   # print(labelled_pics)
 
-  bucket2 = client.get_bucket('file-dump-bucket2')
+  bucket3 = client.get_bucket('file-dump-bucket2')
   for img in labelled_pics:
-    picblob = bucket2.blob(img)
+    picblob = bucket3.blob(img)
     picblob.upload_from_filename('/tmp/data/labelled/' + img)
 
   return "successs!!!!"
+
+print(main())
