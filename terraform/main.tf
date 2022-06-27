@@ -35,6 +35,7 @@ resource "google_cloudfunctions_function" "yolo" {
   }
   timeouts {
     create = "15m"
+    {{{{
   }
 
   # environment_variables = {
