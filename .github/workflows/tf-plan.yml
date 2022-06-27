@@ -36,7 +36,7 @@ jobs:
         # gsutil -m cp -R gs://gh-actions-tf-backend terraform/
         # ls terraform/*
         # cd terraform
-        gsutil -m cp -R gs://gh-actions-tf-backend /
+        gsutil -m cp -R gs://gh-actions-tf-backend ./
         pwd
     - name: "Terraform Init"
       uses: hashicorp/terraform-github-actions@master
