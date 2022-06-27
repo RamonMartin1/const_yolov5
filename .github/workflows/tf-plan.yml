@@ -37,7 +37,7 @@ jobs:
         # ls terraform/*
         # cd terraform
         echo "copying the files from GCS"
-        gsutil -m cp -R gs://gh-actions-tf-backend/ ./
+        gsutil -m cp -R gs://gh-actions-tf-backend/* ./
         echo "current directory and contents: "
         pwd
         ls
