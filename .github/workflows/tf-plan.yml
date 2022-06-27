@@ -41,10 +41,6 @@ jobs:
         echo "current directory and contents: "
         pwd
         ls
-        cd gh-actions-tf-backend
-        echo "current directory and contents: "
-        pwd
-        ls
     - name: "Terraform Init"
       uses: hashicorp/terraform-github-actions@master
       with:
