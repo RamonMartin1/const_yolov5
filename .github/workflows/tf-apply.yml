@@ -6,8 +6,9 @@ name: Terraform apply on gcp
 # https://github.com/google-github-actions/upload-cloud-storage
 
 on:
-  pull_request:
+  push:
     branches: [master]
+
 
 defaults:
   run:

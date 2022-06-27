@@ -6,7 +6,7 @@ name: Terraform plan on gcp
 # https://github.com/google-github-actions/upload-cloud-storage
 
 on:
-  push:
+  pull_request:
     branches: [master]
 
 
