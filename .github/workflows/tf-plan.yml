@@ -11,6 +11,10 @@ on:
   pull_request:
     branches: [master]
 
+defaults:
+  run:
+    working-directory: terraform
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,9 +33,11 @@ jobs:
     - name: get tfstate and auth files
       shell: bash
       run: |
-        gsutil -m cp -R gs://gh-actions-tf-backend terraform/
-        ls terraform/*
-        cd terraform
+        # gsutil -m cp -R gs://gh-actions-tf-backend terraform/
+        # ls terraform/*
+        # cd terraform
+        gsutil -m cp -R gs://gh-actions-tf-backend /
+        pwd
     - name: "Terraform Init"
       uses: hashicorp/terraform-github-actions@master
       with:
