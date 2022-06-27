@@ -36,7 +36,13 @@ jobs:
         # gsutil -m cp -R gs://gh-actions-tf-backend terraform/
         # ls terraform/*
         # cd terraform
+        echo "copying the files from GCS"
         gsutil -m cp -R gs://gh-actions-tf-backend ./
+        echo "current directory and contents: "
+        pwd
+        ls
+        cd gh-actions-tf-backend
+        echo "current directory and contents: "
         pwd
         ls
     - name: "Terraform Init"
