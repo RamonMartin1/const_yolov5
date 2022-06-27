@@ -1,4 +1,4 @@
-gcloud
+# gcloud
 google-cloud-storage
 # cv2
 
