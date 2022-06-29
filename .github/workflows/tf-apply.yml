@@ -56,7 +56,7 @@ jobs:
       shell: bash
       run: |
         for i in $(cat zipfiles.txt); do
-        7z a -r "$i""/""$i"".zip" "$i""/*"
+        7z a -r "$i""/""$i"".zip" "$i""/*" -stl
         done
     - name: "Terraform Apply"
       uses: hashicorp/terraform-github-actions@master
