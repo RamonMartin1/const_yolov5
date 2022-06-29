@@ -26,11 +26,11 @@ resource "google_storage_bucket_object" "yolo_archive" {
 # }
 
 resource "google_cloudfunctions_function" "yolo" {
-  name        = "yolo"
+  name        = "yoloo"
   description = "yolo detector"
   runtime     = "python38"
 
-  available_memory_mb   = 2048
+  available_memory_mb   = 1024
   source_archive_bucket = google_storage_bucket.code_load.name
   source_archive_object = google_storage_bucket_object.yolo_archive.name
   trigger_http          = true
@@ -42,6 +42,9 @@ resource "google_cloudfunctions_function" "yolo" {
   timeouts {
     create = "15m"
   }
+  depends_on = [
+    google_storage_bucket_object.yolo_archive
+  ]
 }
 
 # IAM entry for a single user to invoke the function
