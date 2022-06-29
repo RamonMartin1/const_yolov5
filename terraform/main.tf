@@ -13,10 +13,16 @@ resource "google_storage_bucket" "code_load" {
   location = "US"
 }
 
+# resource "google_storage_bucket_object" "yolo_archive" {
+#   name   = "yolo.zip"
+#   bucket = google_storage_bucket.code_load.name
+#   source = "./yolo/yolo.zip"
+# }
+
 resource "google_storage_bucket_object" "yolo_archive" {
-  name   = "yolo.zip"
+  name   = "Archive.zip"
   bucket = google_storage_bucket.code_load.name
-  source = "./yolo/yolo.zip"
+  source = "./yolo/Archive.zip"
 }
 
 # resource "google_storage_bucket_object" "flask_archive" {
