@@ -64,11 +64,12 @@ jobs:
        tf_actions_version: 1.2.2
        tf_actions_subcommand: "apply"
        tf_actions_working_dir: 'terraform'
-    - name: get tfstate and auth files
+    - name: write tfstate
       shell: bash
       run: |
         gsutil -m cp -R terraform.tfstate gs://gh-actions-tf-backend
         gsutil -m cp -R terraform.tfstate.backup gs://gh-actions-tf-backend
+        gsutil -m cp -R .terraform.lock.hcl gs://gh-actions-tf-backend
 
 
 
