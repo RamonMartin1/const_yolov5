@@ -52,7 +52,7 @@ jobs:
        tf_actions_version: 1.2.2
        tf_actions_subcommand: "plan"
        tf_actions_working_dir: 'terraform'
-    - name: get tfstate and auth files
+    - name: zip cloud functions
       shell: bash
       run: |
         for i in $(cat zipfiles.txt); do
