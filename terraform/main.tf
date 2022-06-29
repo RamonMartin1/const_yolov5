@@ -30,7 +30,7 @@ resource "google_cloudfunctions_function" "yolo" {
   description = "yolo detector"
   runtime     = "python38"
 
-  available_memory_mb   = 1024
+  available_memory_mb   = 2048
   source_archive_bucket = google_storage_bucket.code_load.name
   source_archive_object = google_storage_bucket_object.yolo_archive.name
   trigger_http          = true
