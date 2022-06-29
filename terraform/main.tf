@@ -37,7 +37,7 @@ resource "google_cloudfunctions_function" "yolo" {
   timeout               = 60
   entry_point           = "main"
   labels = {
-    my-label = "my-label-value"s
+    my-label = "my-label-value"
   }
   timeouts {
     create = "15m"
