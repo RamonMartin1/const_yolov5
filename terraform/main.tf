@@ -59,6 +59,28 @@ resource "google_cloudfunctions_function" "yolo" {
   ]
 }
 
+resource "google_cloudfunctions_function" "yolo2" {
+  name        = "yolo2"
+  description = "yolo detector"
+  runtime     = "python38"
+
+  available_memory_mb   = 1024
+  source_archive_bucket = google_storage_bucket.code_load.name
+  source_archive_object = google_storage_bucket_object.yolo_archive2.name
+  trigger_http          = true
+  timeout               = 60
+  entry_point           = "main"
+  labels = {
+    my-label = "my-label-value"
+  }
+  timeouts {
+    create = "15m"
+  }
+  depends_on = [
+    google_storage_bucket_object.yolo_archive2
+  ]
+}
+
 # # IAM entry for a single user to invoke the function
 # resource "google_cloudfunctions_function_iam_member" "invoker" {
 #   project        = google_cloudfunctions_function.yolo.project
