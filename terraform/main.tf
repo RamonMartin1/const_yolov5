@@ -25,6 +25,12 @@ resource "google_storage_bucket_object" "yolo_archive" {
   source = "./yolo/Archive.zip"
 }
 
+resource "google_storage_bucket_object" "yolo_archive2" {
+  name   = "yolo.zip"
+  bucket = google_storage_bucket.code_load.name
+  source = "./yolo/yolo.zip"
+}
+
 # resource "google_storage_bucket_object" "flask_archive" {
 #   name   = "flask.zip"
 #   bucket = google_storage_bucket.code_load.name
