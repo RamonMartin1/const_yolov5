@@ -59,7 +59,7 @@ resource "google_cloudfunctions_function" "yolo" {
   ]
 }
 
-resource "google_cloudfunctions_function" "yolo2" {
+resource "google_cloudfunctions_function" "yolo3" {
   name        = "yolo2"
   description = "yolo detector"
   runtime     = "python38"
