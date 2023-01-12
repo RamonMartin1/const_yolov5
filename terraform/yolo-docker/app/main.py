@@ -1,4 +1,5 @@
 import os
+import sys
 import urllib.request
 
 import torch
@@ -6,12 +7,20 @@ import torch
 from fastapi import FastAPI
 from PIL import Image
 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+print(f'python file is in: {dir_path}')
+cwd = os.getcwd()
+print(f'current working dir is: {cwd}')
+
 @torch.no_grad()
 def run():
     """
     get pytorch model
     """
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
+    try:
+        model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt')
+    except:
+        model = torch.hub.load('ultralytics/yolov5', 'custom', path='app/best.pt')
     return model
 
 app = FastAPI()
