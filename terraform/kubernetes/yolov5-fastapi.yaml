@@ -1,0 +1,57 @@
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: yolov5-fastapi-manual
+# spec:
+#   containers:
+#   - image: rlew631/yolov5-fastapi:latest
+#     name: yolov5-fastapi
+#     ports:
+#     - containerPort: 8000
+#       protocol: TCP
+
+# kubernetes-fastapi LoadBalancer Service
+# Enables the pods in a deployment to be accessible from outside the cluster
+apiVersion: v1
+kind: Service
+metadata:
+  name: yolov5-api-svc
+spec:
+  selector:
+    app: yolov5-api
+  ports:
+    - protocol: "TCP"
+      port: 8000
+      targetPort: 8000
+  type: LoadBalancer
+
+---
+# kf-api Deployment
+# Defines the deployment of the app running in a pod on any worker node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolov5-api
+  labels:
+    app: yolov5-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yolov5-api
+  template:
+    metadata:
+      labels:
+        app: yolov5-api
+    spec:
+      containers:
+        - name: yolov5-api
+          image: rlew631/yolov5-fastapi:latest
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: Always
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "250m"
