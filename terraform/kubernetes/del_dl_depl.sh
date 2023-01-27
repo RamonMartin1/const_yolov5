@@ -8,6 +8,9 @@ minikube ssh docker pull rlew631/yolov5-fastapi:latest
 kubectl create -f ./yolov5-fastapi.yaml
 #show running pods
 kubectl get pods
+echo 'waiting for pod(s) to deploy'
+kubectl wait
+kubectl get pods
 #set up port forwarding
 kubectl port-forward service/lb-service 3000 &
 kubectl port-forward service/lb-service 8000 &
