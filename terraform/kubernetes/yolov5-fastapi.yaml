@@ -1,0 +1,58 @@
+# kubernetes-fastapi LoadBalancer Service
+# port/targetport enables the pods in a deployment to be accessible. Still needs to have port exposed though
+apiVersion: v1
+kind: Service
+metadata:
+  name: lb-service
+spec:
+  ports:
+  - name: tcp1
+    port: 8000
+    targetPort: 8000
+  - name: tcp2
+    port: 3000
+    targetPort: 3000
+  selector:
+    app: yolov5-api
+  type: LoadBalancer
+
+---
+# kf-api Deployment
+# Defines the deployment of the app running in a pod on any worker node
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yolov5-app
+  labels:
+    app: yolov5-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yolov5-api
+  template:
+    metadata:
+      labels:
+        app: yolov5-api
+    spec:
+      containers:
+        - name: yolov5-api
+          image: rlew631/yolov5-fastapi:latest
+          ports:
+            - containerPort: 8000
+          imagePullPolicy: Always
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "250m"
+        - name: react-fe
+          image: rlew631/frontend:latest
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+          resources:
+            # You must specify requests for CPU to autoscale
+            # based on CPU utilization
+            requests:
+              cpu: "250m"

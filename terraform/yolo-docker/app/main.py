@@ -5,6 +5,7 @@ import urllib.request
 import torch
 # from datetime import date
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -26,9 +27,23 @@ def run():
 app = FastAPI()
 model = run()
 
-tmp_files = os.listdir('/tmp')
-if not 'dataframes' in tmp_files:
-    os.mkdir('/tmp/dataframes')
+# tmp_files = os.listdir('/tmp')
+# if not 'dataframes' in tmp_files:
+#     os.mkdir('/tmp/dataframes')
+
+origins = [
+    "http://localhost:3000",
+    "localhost:3000"
+]
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 @app.get("/")
 def main(url: str):
