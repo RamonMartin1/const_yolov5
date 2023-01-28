@@ -1,4 +1,6 @@
 #!/bin/bash
+# start minikube if it isn't running
+# minikube start
 #delete the deployment and load balancer
 kubectl delete deployment yolov5-api
 kubectl delete service lb-service

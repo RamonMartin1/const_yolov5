@@ -4,9 +4,12 @@ import Boundingbox from "react-bounding-box";
 
 export default function App() {
   const [boxes, setBoxes] = useState([]);
-  var base_url = 'https://www.ishn.com/ext/resources/hi-vis-supply-construction-site.jpg'
+  const [base_url, setBase_url] = useState('https://www.ishn.com/ext/resources/hi-vis-supply-construction-site.jpg')
+  const [form_url, setForm_url] = useState('')
+  // var base_url = 'https://www.ishn.com/ext/resources/hi-vis-supply-construction-site.jpg'
   var url = 'http://localhost:8000/?url=' + base_url
-  // response is xmin,ymin,xmax,ymax,confidence,class,name,
+  // response is xmin,ymin,xmax,ymax,confidence,class,name
+
 
   const fetchData = async () => {
     const response = await fetch(url)
@@ -36,11 +39,6 @@ export default function App() {
     image: base_url,
     // boxes: [
     //   // coord(0,0) = top left corner of image
-    //   //[x, y, width, height]
-    //   // [0, 0, 250, 250],
-    //   // [300, 0, 250, 250],
-    //   // [700, 0, 300, 25],
-    //   // [1100, 0, 25, 300]
     //   { coord: [300, 300, 350, 350], label: "test" },
     //   { coord: [300, 0, 250, 250], label: "A" },
     //   { coord: [700, 0, 300, 25], label: "B" },
@@ -59,9 +57,25 @@ export default function App() {
       // showLabels: false
     }
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(formData);
+    setBase_url(formData);
+  }
   return (
     <div className="App">
       <h1>Image labeller</h1>
+      <form onSubmit={
+        (e) => {setBase_url(form_url); e.preventDefault();}
+      }>
+        <label for="url">
+          new url:
+        </label>
+        <input type="text" name="url" id="url" required
+        onChange={e => setForm_url(e.target.value)}
+          ></input>
+        <input type="submit" value="Submit" />
+      </form>
       <h2>Currently viewing: {base_url}</h2>
       <Boundingbox
         image={params.image}
