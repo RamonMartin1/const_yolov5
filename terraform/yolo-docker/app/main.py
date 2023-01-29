@@ -5,6 +5,8 @@ import urllib.request
 import torch
 # from datetime import date
 from fastapi import FastAPI
+from fastapi import Response
+# from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
@@ -61,7 +63,9 @@ def main(url: str):
     # model(img).save(save_dir = '/tmp/data/labelled')
     # labels.to_csv('/tmp/dataframes/results.csv')
 
-    return labels.to_json(orient="records")
+    res = labels.to_json(orient="records")
+    return Response(content=res, media_type="application/json")
+    # return JSONResponse(content=res)
 
 #working fine as web server, using the following url to test: http://127.0.0.1:8000/?url=https://img.forconstructionpros.com/files/base/acbm/fcp/image/2021/04/workers_examining_work.606ddbf099d73.png
 

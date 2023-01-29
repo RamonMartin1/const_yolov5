@@ -9,9 +9,9 @@ spec:
   - name: tcp1
     port: 8000
     targetPort: 8000
-  - name: tcp2
-    port: 3000
-    targetPort: 3000
+  # - name: tcp2
+  #   port: 3000
+  #   targetPort: 3000
   selector:
     app: yolov5-api
   type: LoadBalancer

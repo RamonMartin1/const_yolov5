@@ -2,7 +2,7 @@
 # start minikube if it isn't running
 # minikube start
 #delete the deployment and load balancer
-kubectl delete deployment yolov5-api
+kubectl delete deployment yolov5-app
 kubectl delete service lb-service
 #download the latest model from dockerhub
 minikube ssh docker pull rlew631/yolov5-fastapi:latest

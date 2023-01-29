@@ -7,12 +7,12 @@ export default function App() {
   const [base_url, setBase_url] = useState('https://www.ishn.com/ext/resources/hi-vis-supply-construction-site.jpg')
   const [form_url, setForm_url] = useState('')
   // var base_url = 'https://www.ishn.com/ext/resources/hi-vis-supply-construction-site.jpg'
-  var url = 'http://localhost:8000/?url=' + base_url
+  var url = 'http://localhost:8000/?url='
   // response is xmin,ymin,xmax,ymax,confidence,class,name
 
 
-  const fetchData = async () => {
-    const response = await fetch(url)
+  const fetchData = async (api_url) => {
+    const response = await fetch(api_url)
     if (!response.ok) {
       throw new Error('Data coud not be fetched!')
     } else {
@@ -20,8 +20,8 @@ export default function App() {
     }
   }
 
-  useEffect(() => {
-    fetchData()
+  useEffect((url, base_url) => {
+    fetchData(url+base_url)
       .then((res) => {
         // JSON.parse(res) is used in place of `res` since the returned val from the api is a str
         const mappedBoxes = JSON.parse(res).map(box => ({
@@ -57,11 +57,6 @@ export default function App() {
       // showLabels: false
     }
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    setBase_url(formData);
-  }
   return (
     <div className="App">
       <h1>Image labeller</h1>
