@@ -16,14 +16,13 @@ export default function App() {
     if (!response.ok) {
       throw new Error('Data coud not be fetched!')
     } else {
-      return response.json()
+      return await response.text()
     }
   }
 
-  useEffect((url, base_url) => {
+  useEffect(() => {
     fetchData(url+base_url)
       .then((res) => {
-        // JSON.parse(res) is used in place of `res` since the returned val from the api is a str
         const mappedBoxes = JSON.parse(res).map(box => ({
             coord: [box.xmin, box.ymin, box.xmax - box.xmin, box.ymax - box.ymin],
             label: box.name
@@ -33,7 +32,7 @@ export default function App() {
       .catch((e) => {
         console.log(e.message)
       })
-  }, [])
+  }, [base_url]) // this makes sure that useEffect is re-run when base_url updates
 
   const params = {
     image: base_url,
